@@ -3,7 +3,7 @@ name: Arduino Adapter CI
 on: [push, pull_request]
 
 jobs:
-  buildGWMSX84Driver:
+  buildGWMSXDriver:
     name: Build GotWay MSuper X driver
     runs-on: macos-latest
 
