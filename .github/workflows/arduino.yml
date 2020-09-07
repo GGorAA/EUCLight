@@ -1,0 +1,24 @@
+name: Arduino CI
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    name: Build project
+    runs-on: macos-latest
+
+    steps:
+      - uses: actions/checkout@v2
+        
+      - name: Install Homebrew
+        run: /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
+        
+
+      - name: Install Arduino CLI
+        run: brew install arduino-cli
+
+      - name: Install dependencies
+        run: arduino-cli core install arduino:avr
+        
+      - name: Build sketch
+        run: arduino-cli compile -b arduino:avr:uno euclight --dry-run  
