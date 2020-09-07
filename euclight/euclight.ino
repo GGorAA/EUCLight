@@ -1,7 +1,8 @@
-#define RUN_MODE "DEBUG"
+#define DEBUG_ENABLED true // запуск режима отладки. 
+#define LIGHTS_PIN 1 // пин, к которому подключена лента
 
 void setup() {
-  if (RUN_MODE == "DEBUG") {
+  if (DEBUG_ENABLED == true) {
     setupSerial();
   }
 }
