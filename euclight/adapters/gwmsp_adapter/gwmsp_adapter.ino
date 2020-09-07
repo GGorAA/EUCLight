@@ -1,3 +1,7 @@
-void help() {
+void setup() {
+  
+}
+
+void loop() {
   
 }
