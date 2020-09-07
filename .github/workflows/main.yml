@@ -1,4 +1,4 @@
-name: EUClight Main CI
+name: EUCLight Main CI
 
 on: [push, pull_request]
 
