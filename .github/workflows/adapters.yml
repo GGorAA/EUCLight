@@ -1,10 +1,10 @@
-name: Arduino CI
+name: Arduino Adapter CI
 
 on: [push, pull_request]
 
 jobs:
-  build:
-    name: Build project
+  buildGWMSX84Adapter:
+    name: Build GotWay MSX84 adapter
     runs-on: macos-latest
 
     steps:
@@ -21,4 +21,4 @@ jobs:
         run: arduino-cli core install arduino:avr
         
       - name: Build sketch
-        run: arduino-cli compile -b arduino:avr:uno euclight --dry-run  
+        run: arduino-cli compile -b arduino:avr:uno euclight/adapters/gwmsx84_adapter --dry-run  
