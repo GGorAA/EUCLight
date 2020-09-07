@@ -1,8 +1,7 @@
 
 int lightStripSpeed() {
-    
-}
 
+}
 
 int deviceSpeed() {
 

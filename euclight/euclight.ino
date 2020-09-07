@@ -5,7 +5,6 @@
 #include "FastLED.h"
 #include <EucInterface.h>
 
-unsigned long lightStripDelayLastCalled;
 
 CRGB leds[LED_COUNT];
 byte counter;
@@ -26,8 +25,5 @@ void loop() {
   }
   counter++;        // counter меняется от 0 до 255 (тип данных byte)
   FastLED.show();
-  if (millis() - lightStripDelayLastCalled >= 50 ) {
-    lightStripDelayLastCalled = millis();
-  }
   delay(lightStripSpeed());         // скорость движения радуги
 }
