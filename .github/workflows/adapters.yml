@@ -20,7 +20,7 @@ jobs:
         run: arduino-cli core install arduino:avr
         
       - name: Build sketch
-        run: arduino-cli compile -b arduino:avr:uno drivers/gwmsx --dry-run  
+        run: arduino-cli compile -b arduino:avr:uno drivers/gwmsx --dry-run
   buildGWMSPDriver:
     name: Build GotWay MSuper Pro driver
     runs-on: macos-latest
@@ -38,6 +38,6 @@ jobs:
         run: arduino-cli core install arduino:avr
         
       - name: Build sketch
-        run: arduino-cli compile -b arduino:avr:uno drivers/gwmsp --dry-run  
+        run: arduino-cli compile -b arduino:avr:uno drivers/gwmsp --dry-run
 
       
