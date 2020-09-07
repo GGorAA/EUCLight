@@ -3,8 +3,8 @@ name: Arduino Adapter CI
 on: [push, pull_request]
 
 jobs:
-  buildGWMSX84Adapter:
-    name: Build GotWay MSX84 adapter
+  buildGWMSX84Driver:
+    name: Build GotWay MSuper X driver
     runs-on: macos-latest
 
     steps:
@@ -21,4 +21,10 @@ jobs:
         run: arduino-cli core install arduino:avr
         
       - name: Build sketch
-        run: arduino-cli compile -b arduino:avr:uno adapters/gwmsx84 --dry-run  
+        run: arduino-cli compile -b arduino:avr:uno adapters/gwmsx --dry-run  
+  buildGWMSPDriver:
+    name: Build GotWay MSuper Pro driver
+    runs-on: macos-latest
+
+    steps:
+      - uses: actions/checkout@v2
