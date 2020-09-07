@@ -16,6 +16,9 @@ jobs:
 
       - name: Install Arduino CLI
         run: brew install arduino-cli
+
+      - name: Install dependencies
+        run: arduino-cli core install arduino:avr
         
       - name: Build sketch
         run: arduino-cli compile -b arduino:avr:uno euclight --dry-run  
