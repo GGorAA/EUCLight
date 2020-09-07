@@ -13,7 +13,6 @@ jobs:
       - name: Install Homebrew
         run: /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
         
-
       - name: Install Arduino CLI
         run: brew install arduino-cli
 
