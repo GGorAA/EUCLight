@@ -21,4 +21,4 @@ jobs:
         run: arduino-cli core install arduino:avr
         
       - name: Build sketch
-        run: arduino-cli compile -b arduino:avr:uno euclight/adapters/gwmsx84_adapter --dry-run  
+        run: arduino-cli compile -b arduino:avr:uno euclight/adapters/gwmsx84_adaptr --dry-run  
