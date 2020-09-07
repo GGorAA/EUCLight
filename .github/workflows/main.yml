@@ -1,4 +1,4 @@
-name: Arduino Main CI
+name: EUClight Main CI
 
 on: [push, pull_request]
 

@@ -1,4 +1,4 @@
-name: Arduino Adapter CI
+name: EUCLight Driver CI
 
 on: [push, pull_request]
 
