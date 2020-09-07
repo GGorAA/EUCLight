@@ -1,6 +1,4 @@
 {
     "board": "arduino:avr:uno",
-    "port": "/dev/tty.pci-serial22",
-    "sketch": "euclight/euclight.ino",
-    "output": "build"
+    "sketch": "euclight/euclight.ino"
 }
