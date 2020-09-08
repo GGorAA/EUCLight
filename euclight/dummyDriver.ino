@@ -1,10 +1,15 @@
 
-int lightStripSpeed() {
+
+void eucRunOnStartup() {
+    Serial.begin(115200);
+}
+
+int eucLightStripSpeed() {
     
 }
 
-
-int deviceSpeed() {
+int eucDeviceSpeed() {
 
 }
+
 
