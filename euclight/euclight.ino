@@ -5,7 +5,10 @@
 #include "FastLED.h"
 #include <EucInterface.h>
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> parent of c954c17... started work on driver architecure, updated main script
 CRGB leds[LED_COUNT];
 byte counter;
 
@@ -25,5 +28,9 @@ void loop() {
   }
   counter++;        // counter меняется от 0 до 255 (тип данных byte)
   FastLED.show();
+<<<<<<< HEAD
   delay(lightStripSpeed());         // скорость движения радуги
+=======
+  delay(5);         // скорость движения радуги
+>>>>>>> parent of c954c17... started work on driver architecure, updated main script
 }
