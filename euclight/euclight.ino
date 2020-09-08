@@ -12,13 +12,15 @@ void setup() {
   FastLED.addLeds<WS2811, LIGHTS_PIN, GRB>(leds, LED_COUNT).setCorrection( TypicalLEDStrip ); // настройка ленты
   FastLED.setBrightness(50);
   pinMode(13, OUTPUT);
+
+  
 }
 
 void loop() {
   // Тут мы собираем данные с колеса
   int lightStripSpeed = eucLightStripSpeed()
   
-  
+
   if (millis() - lightStripDelayLastCalled >= lightStripSpeed() ) {
     lightStripDelayLastCalled = millis();                       // заново считать время
 
