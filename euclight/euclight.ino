@@ -18,7 +18,6 @@ void loop() {
   // Тут мы собираем данные с колеса
   int lightStripSpeed = eucLightStripSpeed()
   
-
   if (millis() - lightStripDelayLastCalled >= lightStripSpeed() ) {
     lightStripDelayLastCalled = millis();                       // заново считать время
 
