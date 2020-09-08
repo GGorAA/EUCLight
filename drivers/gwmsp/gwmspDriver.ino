@@ -1,0 +1,9 @@
+
+int lightStripSpeed() {
+    
+}
+
+
+int deviceSpeed() {
+
+}

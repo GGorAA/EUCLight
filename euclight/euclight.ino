@@ -1,14 +1,12 @@
 #define DEBUG_ENABLED true // запуск режима отладки. 
 #define LIGHTS_PIN 6 // пин, к которому подключена лента
 #define LED_COUNT 144 // Количество светодиодов во всей ленте
+#define WHEEL_DIAMETER 14 // Диаметр колеса. В дюймах
 
 #include "FastLED.h"
-#include <EucInterface.h>
 
-<<<<<<< HEAD
+unsigned long lightStripDelayLastCalled;
 
-=======
->>>>>>> parent of c954c17... started work on driver architecure, updated main script
 CRGB leds[LED_COUNT];
 byte counter;
 
@@ -28,9 +26,8 @@ void loop() {
   }
   counter++;        // counter меняется от 0 до 255 (тип данных byte)
   FastLED.show();
-<<<<<<< HEAD
+  if (millis() - lightStripDelayLastCalled >= 50 ) {
+    lightStripDelayLastCalled = millis();
+  }
   delay(lightStripSpeed());         // скорость движения радуги
-=======
-  delay(5);         // скорость движения радуги
->>>>>>> parent of c954c17... started work on driver architecure, updated main script
 }

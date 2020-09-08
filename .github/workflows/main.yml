@@ -4,7 +4,7 @@ on: [push, pull_request]
 
 jobs:
   buildMain:
-    name: Build main project
+    name: Compile main project
     runs-on: macos-latest
 
     steps:
@@ -19,5 +19,5 @@ jobs:
       - name: Install dependencies
         run: arduino-cli core install arduino:avr
         
-      - name: Build sketch
+      - name: Compile sketch
         run: arduino-cli compile -b arduino:avr:uno euclight --dry-run  

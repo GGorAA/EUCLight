@@ -1,10 +1,10 @@
-name: EUCLight Driver CI
+name: EUCLight Drivers CI
 
 on: [push, pull_request]
 
 jobs:
   buildGWMSXDriver:
-    name: Build GotWay MSuper X driver
+    name: Compile GotWay MSuper X driver
     runs-on: macos-latest
 
     steps:
@@ -19,10 +19,10 @@ jobs:
       - name: Install dependencies
         run: arduino-cli core install arduino:avr
         
-      - name: Build sketch
+      - name: Compile sketch
         run: arduino-cli compile -b arduino:avr:uno drivers/gwmsx --dry-run
   buildGWMSPDriver:
-    name: Build GotWay MSuper Pro driver
+    name: Compile GotWay MSuper Pro driver
     runs-on: macos-latest
 
     steps:
@@ -37,7 +37,7 @@ jobs:
       - name: Install dependencies
         run: arduino-cli core install arduino:avr
         
-      - name: Build sketch
+      - name: Compile sketch
         run: arduino-cli compile -b arduino:avr:uno drivers/gwmsp --dry-run
 
       
