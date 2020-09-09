@@ -18,8 +18,8 @@ jobs:
 
       - name: Install dependencies
         run:
-          arduino-cli core install arduino:avr
-          arduino-cli lib install FastLED
+          arduino-cli core install arduino:avr &&
+          arduino-cli lib install FastLED &&
           brew install tree
         
       - name: Compile sketch
