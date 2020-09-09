@@ -26,26 +26,22 @@ void loop() {
     lightStripDelayLastCalled = millis();                       // Заново считать время
 
     if (eucDeviceState() == 'accelerating') {
-      lightSpeedNormal();
+      lightStripNormal();
     } else if (eucDeviceState() == 'braking') {
-      lightStripWithStopSignal();
+
     } else if (eucDeviceState() == 'back') {
 
     } else {
-      lightSpeedNormal();
+      lightStripNormal()
     }
   }
 }
 
-void lightSpeedNormal() {
+void lightStripNormal() {
   for (int i = 0; i < LED_COUNT; i++ ) {                        // от 0 до первой трети
       lightStripLEDs[i] = CHSV(lightStripCounter + i * 2, 255, 255);      // HSV. Увеличивать HUE (цвет)
       // умножение i уменьшает шаг радуги
     }
     lightStripCounter++;                                        // lightStripCounter меняется от 0 до 255 (тип данных byte)
     FastLED.show();
-}
-
-void lightStripWithStopSignal() {
-
 }
