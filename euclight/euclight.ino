@@ -29,3 +29,7 @@ void loop() {
     FastLED.show();
   }
 }
+
+void lightStripStopSignal() {
+  
+}
