@@ -17,7 +17,12 @@ jobs:
         run: brew install arduino-cli
 
       - name: Install dependencies
-        run: arduino-cli core install arduino:avr
+        run:
+          arduino-cli core install arduino:avr
+          arduino-cli lib install FastLED
+          brew install tree
         
       - name: Compile sketch
-        run: arduino-cli compile -b arduino:avr:uno euclight --dry-run  
+        run:
+          arduino-cli compile -b arduino:avr:uno euclight --dry-run &&
+          tree /Users
