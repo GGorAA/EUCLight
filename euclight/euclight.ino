@@ -13,23 +13,23 @@ void setup() {
   driverRunOnStartup();                                          // Стартовые функции драйвера
   FastLED.addLeds<WS2811, LIGHTS_PIN, GRB>(leds, LED_COUNT).setCorrection( TypicalLEDStrip ); // настройка ленты
   FastLED.setBrightness(50);
-  pinMode(13, OUTPUT);
+  pinMode(6, OUTPUT);
 }
 
 void loop() {
   // Тут мы собираем данные с колеса
   
-  eucCollectData()
+  eucCollectData();
   int lightStripSpeed = eucLightStripSpeed();                   // Берем данные про скорость подсветки
   
-  if (millis() - lightStripDelayLastCalled >= lightStripSpeed ) { // Задержка
+  if (millis() - lightStripDelayLastCalled >= eucLightStripSpeed ) { // Задержка
     lightStripDelayLastCalled = millis();                       // Заново считать время
 
     switch (eucDeviceState()) {
-      case 'a':
+      case "accelerating":
         lightSpeedNormal();
         break;
-      case 'b':
+      case "braking":
         lightStripWithStopSignal();
         break;
       default:

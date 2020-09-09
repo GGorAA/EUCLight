@@ -1,7 +1,8 @@
-char eucDataArray[]
+char eucDataArray[20];
+char eucTempDataArray[20];
 
 void driverRunOnStartup() {
-    uart.begin(115200);
+    
 }
 
 int eucLightStripSpeed() {
@@ -9,9 +10,7 @@ int eucLightStripSpeed() {
 }
 
 void eucCollectData() {
-    if (uart.parsePacket((int*)eucDataArray)) {
-
-    }
+    
 }
 
 int eucDeviceSpeed;
