@@ -49,9 +49,9 @@ void loop() {
   if (millis() - lightStripDelayLastCalled >= eucLightStripSpeed ) { // Задержка
     lightStripDelayLastCalled = millis();                       // Заново считать время
 
-    if (eucDeviceState() == 'accelerating') {
-      brakeLightControl(false);
-      mainLightStripAnimation();
+    if (eucDeviceState() == 'accelerating') {                   // Если моноколесо ускоряеться
+      brakeLightControl(false);                                 // Выключить стоп-сигнал
+      mainLightStripAnimation();                                // Анимация главной светодиодной ленты
     } else if (eucDeviceState() == 'braking') {
       brakeLightControl(true, 1);
       mainLightStripAnimation();
