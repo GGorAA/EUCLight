@@ -1,4 +1,5 @@
 {
     "board": "arduino:avr:uno",
-    "sketch": "euclight/euclight.ino"
+    "sketch": "euclight/euclight.ino",
+    "port": "/dev/tty.usbmodem14101"
 }

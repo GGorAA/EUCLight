@@ -11,6 +11,7 @@ int eucLightStripSpeed() {
 
 void eucCollectData() {
     if (Serial.available()) {
+        /*
         for (byte i = 0; i < 20; i++) { // цикл for который заполняет массив
             char incomingByte = Serial.read();
             eucDataArray[i] = incomingByte;
@@ -22,6 +23,9 @@ void eucCollectData() {
             ) {
                 
             }
+        }*/
+        if (Serial.find(0x5A 0x5A, 2)) {
+
         }
         Serial.readBytes(eucDataArray, 20);
     }

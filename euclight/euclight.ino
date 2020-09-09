@@ -6,14 +6,14 @@
 
 unsigned long lightStripDelayLastCalled;                        // переменная для замены delay() при помощи millis()
 
-CRGB leds[LED_COUNT];
+CRGB lightStripLEDs[LED_COUNT];
 byte lightStripCounter;
 
 void setup() {
   driverRunOnStartup();                                          // Стартовые функции драйвера
-  FastLED.addLeds<WS2811, LIGHTS_PIN, GRB>(leds, LED_COUNT).setCorrection( TypicalLEDStrip ); // настройка ленты
+  FastLED.addLeds<WS2811, LIGHTS_PIN, GRB>(lightStripLEDs, LED_COUNT).setCorrection( TypicalLEDStrip ); // настройка ленты
   FastLED.setBrightness(50);
-  pinMode(6, OUTPUT);
+  pinMode(LIGHTS_PIN, OUTPUT);
 }
 
 void loop() {
@@ -25,23 +25,21 @@ void loop() {
   if (millis() - lightStripDelayLastCalled >= eucLightStripSpeed ) { // Задержка
     lightStripDelayLastCalled = millis();                       // Заново считать время
 
-    switch (eucDeviceState()) {
-      case "accelerating":
-        lightSpeedNormal();
-        break;
-      case "braking":
-        lightStripWithStopSignal();
-        break;
-      default:
-        lightSpeedNormal();
-        break;
+    if (eucDeviceState() == 'accelerating') {
+      lightSpeedNormal();
+    } else if (eucDeviceState() == 'braking') {
+      lightStripWithStopSignal();
+    } else if (eucDeviceState() == 'back') {
+
+    } else {
+      lightSpeedNormal();
     }
   }
 }
 
 void lightSpeedNormal() {
   for (int i = 0; i < LED_COUNT; i++ ) {                        // от 0 до первой трети
-      leds[i] = CHSV(lightStripCounter + i * 2, 255, 255);      // HSV. Увеличивать HUE (цвет)
+      lightStripLEDs[i] = CHSV(lightStripCounter + i * 2, 255, 255);      // HSV. Увеличивать HUE (цвет)
       // умножение i уменьшает шаг радуги
     }
     lightStripCounter++;                                        // lightStripCounter меняется от 0 до 255 (тип данных byte)
