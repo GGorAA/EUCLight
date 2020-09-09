@@ -30,4 +30,7 @@
 *.exe
 *.out
 *.app
+
 .DS_Store
+
+euclight/parse.java
