@@ -1,7 +1,7 @@
 // Настройки главной светодиодной ленты
 #define LIGHT_STRIP_PIN 6                                       // Пин, к которому подключена главная лента
-#define LED_COUNT 144                                           // Количество светодиодов во всей главной ленте
-#define LIGHT_STRIP_BRIGHTNESS 50                               // Яркость ленты
+#define LIGHT_STRIP_LED_COUNT 144                               // Количество светодиодов во всей главной ленте
+#define LIGHT_STRIP_BRIGHTNESS 50                               // Яркость ленты. Диапазон: 0 - 255
 
 //Настройки стоп-сигнала
 // Пины
@@ -9,26 +9,26 @@
 #define BRAKELIGHT_GREEN_PIN 10                                 // Пин для подключения зеленого цвета стоп-сигнала
 #define BRAKELIGHT_BLUE_PIN 11                                  // Пин для подключения синего цвета стоп-сигнала
 // Свет
-#define BRAKELIGHT_BRIGHTNESS 100                               // Яркость стоп-сигнала
+#define BRAKELIGHT_BRIGHTNESS 100                               // Яркость стоп-сигнала. Диапазон: 0 - 255
 // Анимации
 #define BRAKELIGHT_ANIMATION_SPEED_ON 0                         // Скорость анимации включения стоп-сигнала. Измеряеться в миллисекундах
 #define BRAKELIGHT_ANIMATION_SPEED_OFF 500                      // Скорость анимации выключения стоп-сигнала. Измеряеться в миллисекундах
 
 
-#include "FastLED.h"                                            // Библиотека для адресной светодиодной ленты
+#include "microLED.h"                                           // Библиотека для адресной светодиодной ленты
 #include "GyverRGB.h"                                           // Библиотека для светодиодов и обычных RGB лент
 
 unsigned long lightStripDelayLastCalled;                        // Переменная для замены delay() при помощи millis() в главной ленте
 unsigned long brakeLightOffDelayLastCalled;                     // Переменная для замены delay() при помощи millis() в стоп-сигнале
 
-CRGB lightStripLEDs[LED_COUNT];                                 // Обьект главной светодиодной ленты
+LEDdata lightStripLEDs[LED_COUNT];                              
 GRGB brakeLight(BRAKELIGHT_RED_PIN, BRAKELIGHT_GREEN_PIN, BRAKELIGHT_BLUE_PIN); // Обьект стоп-сигнала
-byte lightStripCounter;
+microLED mainLightStrip(lightStripLEDs, LIGHT_STRIP_LED_COUNT, LIGHT_STRIP_PIN); // Обьект главной светодиодной ленты
 
 void setup() {
-  driverRunOnStartup();                                          // Стартовые функции драйвера
-  FastLED.addLeds<WS2811, LIGHT_STRIP_PIN, GRB>(lightStripLEDs, LED_COUNT).setCorrection( TypicalLEDStrip ); // настройка ленты
-  FastLED.setBrightness(LIGHT_STRIP_BRIGHTNESS);
+  driverRunOnStartup(brakeLightBrightness);                                          // Стартовые функции драйвера
+  mainLightStrip.setBrightness(mainLightStripBrightness)
+  brakeLight.setBrightness()
   // Настройка пинов
   pinMode(LIGHT_STRIP_PIN, OUTPUT);
   pinMode(BRAKELIGHT_RED_PIN, OUTPUT);
@@ -55,13 +55,4 @@ void loop() {
       lightStripAnimation();
     }
   }
-}
-
-void lightStripAnimation() {
-  for (int i = 0; i < LED_COUNT; i++ ) {                        // От 0 до первой трети
-    lightStripLEDs[i] = CHSV(lightStripCounter + i * 2, 255, 255);      // HSV. Увеличивать HUE (цвет)
-    // умножение i уменьшает шаг радуги
-  }
-  lightStripCounter++;                                          // lightStripCounter меняется от 0 до 255 (тип данных byte)
-  FastLED.show();
 }
