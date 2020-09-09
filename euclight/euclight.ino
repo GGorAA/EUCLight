@@ -52,14 +52,14 @@ void lightStripAnimation() {
     lightStripLEDs[i] = CHSV(lightStripCounter + i * 2, 255, 255);      // HSV. Увеличивать HUE (цвет)
     // умножение i уменьшает шаг радуги
   }
-  lightStripCounter++;                                        // lightStripCounter меняется от 0 до 255 (тип данных byte)
+  lightStripCounter++;                                          // lightStripCounter меняется от 0 до 255 (тип данных byte)
   FastLED.show();
 }
 
-void brakeLightControl(bool state, int lightType = 0) {          // Функция для контроля заднего света
-  if (state == true) {
-    if (lightType == 0) {
-      digitalWrite(BRAKELIGHT_RED_PIN, HIGH);
+void brakeLightControl(bool state, int lightType = 0) {         // Функция для контроля заднего света
+  if (state == true) {                                          // Если надо включить
+    if (lightType == 0) {                                       // Если тип света обычный, красный
+      digitalWrite(BRAKELIGHT_RED_PIN, HIGH);                   // Подать 5 вольт на красный цвет
     } else if (lightType == 1) {
       digitalWrite(BRAKELIGHT_RED_PIN, HIGH);
       digitalWrite(BRAKELIGHT_GREEN_PIN, HIGH);
@@ -70,7 +70,7 @@ void brakeLightControl(bool state, int lightType = 0) {          // Функци
       digitalWrite(BRAKELIGHT_RED_PIN, LOW);
     } else if (lightType == 1) {
       for (int i = 100; 1 <= 100; i--) {
-        int duty = map(i, 0, 100, 0, 255);
+        int duty = map(i, 0, 100, 0, 255); 
         if(millis() - brakeLightOffDelayLastCalled >= 20) {
           brakeLightOffDelayLastCalled = millis();
 
@@ -79,8 +79,6 @@ void brakeLightControl(bool state, int lightType = 0) {          // Функци
           analogWrite(BRAKELIGHT_BLUE_PIN, duty);
         }
       }
-      digitalWrite(BRAKELIGHT_GREEN_PIN, LOW);
-      digitalWrite(BRAKELIGHT_BLUE_PIN, LOW);
     }
   }
 }
