@@ -1,18 +1,28 @@
+// Настройки главной светодиодной ленты
 #define LIGHT_STRIP_PIN 6                                       // Пин, к которому подключена главная лента
 #define LED_COUNT 144                                           // Количество светодиодов во всей главной ленте
 #define LIGHT_STRIP_BRIGHTNESS 50                               // Яркость ленты
 
-#define BRAKELIGHT_RED_PIN 9                                    // Пин для подключения красного цвета заднего света
-#define BRAKELIGHT_GREEN_PIN 10                                 // Пин для подключения зеленого цвета заднего света
-#define BRAKELIGHT_BLUE_PIN 11                                  // Пин для подключения синего цвета заднего света
+//Настройки стоп-сигнала
+// Пины
+#define BRAKELIGHT_RED_PIN 9                                    // Пин для подключения красного цвета стоп-сигнала
+#define BRAKELIGHT_GREEN_PIN 10                                 // Пин для подключения зеленого цвета стоп-сигнала
+#define BRAKELIGHT_BLUE_PIN 11                                  // Пин для подключения синего цвета стоп-сигнала
+// Свет
+#define BRAKELIGHT_BRIGHTNESS 100                               // Яркость стоп-сигнала
+// Анимации
+#define BRAKELIGHT_ANIMATION_SPEED_ON 0                         // Скорость анимации включения стоп-сигнала. Измеряеться в миллисекундах
+#define BRAKELIGHT_ANIMATION_SPEED_OFF 500                      // Скорость анимации выключения стоп-сигнала. Измеряеться в миллисекундах
 
-#include "FastLED.h"                                            // Библиотека для светодиодной ленты
 
+#include "FastLED.h"                                            // Библиотека для адресной светодиодной ленты
+#include "GyverRGB.h"                                           // Библиотека для светодиодов и обычных RGB лент
 
 unsigned long lightStripDelayLastCalled;                        // Переменная для замены delay() при помощи millis() в главной ленте
-unsigned long brakeLightOffDelayLastCalled;                     // Переменная для замены delay() при помощи millis() в заднем свете
+unsigned long brakeLightOffDelayLastCalled;                     // Переменная для замены delay() при помощи millis() в стоп-сигнале
 
-CRGB lightStripLEDs[LED_COUNT];
+CRGB lightStripLEDs[LED_COUNT];                                 // Обьект главной светодиодной ленты
+GRGB brakeLight(BRAKELIGHT_RED_PIN, BRAKELIGHT_GREEN_PIN, BRAKELIGHT_BLUE_PIN); // Обьект стоп-сигнала
 byte lightStripCounter;
 
 void setup() {
@@ -54,31 +64,4 @@ void lightStripAnimation() {
   }
   lightStripCounter++;                                          // lightStripCounter меняется от 0 до 255 (тип данных byte)
   FastLED.show();
-}
-
-void brakeLightControl(bool state, int lightType = 0) {         // Функция для контроля заднего света
-  if (state == true) {                                          // Если надо включить
-    if (lightType == 0) {                                       // Если тип света обычный, красный
-      digitalWrite(BRAKELIGHT_RED_PIN, HIGH);                   // Подать 5 вольт на красный цвет
-    } else if (lightType == 1) {
-      digitalWrite(BRAKELIGHT_RED_PIN, HIGH);
-      digitalWrite(BRAKELIGHT_GREEN_PIN, HIGH);
-      digitalWrite(BRAKELIGHT_BLUE_PIN, HIGH);
-    }
-  } else if (state == false) {
-    if (lightType == 0) {
-      digitalWrite(BRAKELIGHT_RED_PIN, LOW);
-    } else if (lightType == 1) {
-      for (int i = 100; 1 <= 100; i--) {
-        int duty = map(i, 0, 100, 0, 255); 
-        if(millis() - brakeLightOffDelayLastCalled >= 20) {
-          brakeLightOffDelayLastCalled = millis();
-
-          analogWrite(BRAKELIGHT_RED_PIN, duty);
-          analogWrite(BRAKELIGHT_GREEN_PIN, duty);
-          analogWrite(BRAKELIGHT_BLUE_PIN, duty);
-        }
-      }
-    }
-  }
 }
