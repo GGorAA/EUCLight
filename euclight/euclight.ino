@@ -23,13 +23,13 @@ void loop() {
 
     switch (eucDeviceState()) {
       case 'a':
-        lightSpeedNormal()
+        lightSpeedNormal();
         break;
       case 'b':
-        lightStripWithStopSignal()
+        lightStripWithStopSignal();
         break;
       default:
-        lightSpeedNormal()
+        lightSpeedNormal();
         break;
     }
   }
