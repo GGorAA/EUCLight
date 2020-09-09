@@ -1,7 +1,11 @@
+// Настройки
+
 // Настройки главной светодиодной ленты
 #define LIGHT_STRIP_PIN 6                                       // Пин, к которому подключена главная лента
 #define LIGHT_STRIP_LED_COUNT 144                               // Количество светодиодов во всей главной ленте
 #define LIGHT_STRIP_BRIGHTNESS 50                               // Яркость ленты. Диапазон: 0 - 255
+#define ORDER_GRB                                               // Порядок цветов
+#define COLOR_DEBTH                                             // Глубина цвета. НАЗВАНИЕ НЕ ТРОГАТЬ, ТАК НАДО
 
 //Настройки стоп-сигнала
 // Пины
@@ -46,13 +50,16 @@ void loop() {
     lightStripDelayLastCalled = millis();                       // Заново считать время
 
     if (eucDeviceState() == 'accelerating') {
-      lightStripAnimation();
+      brakeLightControl(false);
+      mainLightStripAnimation();
     } else if (eucDeviceState() == 'braking') {
-      lightStripAnimation();
+      brakeLightControl(true, 1);
+      mainLightStripAnimation();
     } else if (eucDeviceState() == 'back') {
-
+      brakeLightControl(true, 2);
     } else {
-      lightStripAnimation();
+      brakeLightControl(false);
+      mainLightStripAnimation();
     }
   }
 }
