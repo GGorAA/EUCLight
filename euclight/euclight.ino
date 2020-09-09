@@ -16,6 +16,7 @@ void setup() {
 
 void loop() {
   // Тут мы собираем данные с колеса
+  
   int lightStripSpeed = eucLightStripSpeed();                   // Берем данные про скорость подсветки
   
   if (millis() - lightStripDelayLastCalled >= lightStripSpeed ) { // Задержка
