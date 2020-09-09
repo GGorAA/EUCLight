@@ -2,14 +2,15 @@
 #define LED_COUNT 144                                           // Количество светодиодов во всей главной ленте
 #define LIGHT_STRIP_BRIGHTNESS 50                               // Яркость ленты
 
-#define BRAKELIGHT_RED_PIN 7                                    // Пин для подключения красного цвета заднего света
-#define BRAKELIGHT_GREEN_PIN 8                                  // Пин для подключения зеленого цвета заднего света
-#define BRAKELIGHT_BLUE_PIN 9                                   // Пин для подключения синего цвета заднего света
+#define BRAKELIGHT_RED_PIN 9                                    // Пин для подключения красного цвета заднего света
+#define BRAKELIGHT_GREEN_PIN 10                                 // Пин для подключения зеленого цвета заднего света
+#define BRAKELIGHT_BLUE_PIN 11                                  // Пин для подключения синего цвета заднего света
 
 #include "FastLED.h"                                            // Библиотека для светодиодной ленты
 
 
-unsigned long lightStripDelayLastCalled;                        // Переменная для замены delay() при помощи millis()
+unsigned long lightStripDelayLastCalled;                        // Переменная для замены delay() при помощи millis() в главной ленте
+unsigned long brakeLightOffDelayLastCalled;                     // Переменная для замены delay() при помощи millis() в заднем свете
 
 CRGB lightStripLEDs[LED_COUNT];
 byte lightStripCounter;
@@ -55,10 +56,31 @@ void lightStripAnimation() {
   FastLED.show();
 }
 
-void brakeLightControl(bool state, int lightType) {          // Функция для контроля заднего света
+void brakeLightControl(bool state, int lightType = 0) {          // Функция для контроля заднего света
   if (state == true) {
-    if (lightType == 1) {
+    if (lightType == 0) {
+      digitalWrite(BRAKELIGHT_RED_PIN, HIGH);
+    } else if (lightType == 1) {
+      digitalWrite(BRAKELIGHT_RED_PIN, HIGH);
+      digitalWrite(BRAKELIGHT_GREEN_PIN, HIGH);
+      digitalWrite(BRAKELIGHT_BLUE_PIN, HIGH);
+    }
+  } else if (state == false) {
+    if (lightType == 0) {
+      digitalWrite(BRAKELIGHT_RED_PIN, LOW);
+    } else if (lightType == 1) {
+      for (int i = 100; 1 <= 100; i--) {
+        int duty = map(i, 0, 100, 0, 255);
+        if(millis() - brakeLightOffDelayLastCalled >= 20) {
+          brakeLightOffDelayLastCalled = millis();
 
+          analogWrite(BRAKELIGHT_RED_PIN, duty);
+          analogWrite(BRAKELIGHT_GREEN_PIN, duty);
+          analogWrite(BRAKELIGHT_BLUE_PIN, duty);
+        }
+      }
+      digitalWrite(BRAKELIGHT_GREEN_PIN, LOW);
+      digitalWrite(BRAKELIGHT_BLUE_PIN, LOW);
     }
   }
 }
