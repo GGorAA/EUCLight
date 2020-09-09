@@ -18,7 +18,7 @@ void loop() {
   // Тут мы собираем данные с колеса
   int lightStripSpeed = eucLightStripSpeed();                   // Берем данные про скорость подсветки
   
-  if (millis() - lightStripDelayLastCalled >= lightStripSpeed() ) { // Задержка
+  if (millis() - lightStripDelayLastCalled >= lightStripSpeed ) { // Задержка
     lightStripDelayLastCalled = millis();                       // Заново считать время
 
     switch (eucDeviceState()) {
