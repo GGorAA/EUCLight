@@ -2,6 +2,7 @@
 #define LED_COUNT 144                                           // Количество светодиодов во всей ленте
 
 #include "FastLED.h"                                            // Библиотека для светодиодной ленты
+#include "GyverUART.h"
 
 unsigned long lightStripDelayLastCalled;                        // переменная для замены delay() при помощи millis()
 
