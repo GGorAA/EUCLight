@@ -12,4 +12,7 @@ int eucDeviceSpeed() {
 
 }
 
+char eucDeviceState() {
+    
+}
 
