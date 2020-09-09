@@ -1,14 +1,15 @@
-#define LIGHT_STRIP_PIN 6                                       // пин, к которому подключена главная лента
+#define LIGHT_STRIP_PIN 6                                       // Пин, к которому подключена главная лента
 #define LED_COUNT 144                                           // Количество светодиодов во всей главной ленте
+#define LIGHT_STRIP_BRIGHTNESS 50                               // Яркость ленты
 
-#define BRAKELIGHT_RED_PIN 7                                    // пин для подключения красного цвета заднего света
-#define BRAKELIGHT_GREEN_PIN 8                                  // пин для подключения зеленого цвета заднего света
-#define BRAKELIGHT_BLUE_PIN 9                                   // пин для подключения синего цвета заднего света
+#define BRAKELIGHT_RED_PIN 7                                    // Пин для подключения красного цвета заднего света
+#define BRAKELIGHT_GREEN_PIN 8                                  // Пин для подключения зеленого цвета заднего света
+#define BRAKELIGHT_BLUE_PIN 9                                   // Пин для подключения синего цвета заднего света
 
 #include "FastLED.h"                                            // Библиотека для светодиодной ленты
 
 
-unsigned long lightStripDelayLastCalled;                        // переменная для замены delay() при помощи millis()
+unsigned long lightStripDelayLastCalled;                        // Переменная для замены delay() при помощи millis()
 
 CRGB lightStripLEDs[LED_COUNT];
 byte lightStripCounter;
@@ -16,8 +17,12 @@ byte lightStripCounter;
 void setup() {
   driverRunOnStartup();                                          // Стартовые функции драйвера
   FastLED.addLeds<WS2811, LIGHT_STRIP_PIN, GRB>(lightStripLEDs, LED_COUNT).setCorrection( TypicalLEDStrip ); // настройка ленты
-  FastLED.setBrightness(50);
-  pinMode(LIGHTS_PIN, OUTPUT);
+  FastLED.setBrightness(LIGHT_STRIP_BRIGHTNESS);
+  // Настройка пинов
+  pinMode(LIGHT_STRIP_PIN, OUTPUT);
+  pinMode(BRAKELIGHT_RED_PIN, OUTPUT);
+  pinMode(BRAKELIGHT_GREEN_PIN, OUTPUT);
+  pinMode(BRAKELIGHT_BLUE_PIN, OUTPUT);
 }
 
 void loop() {
@@ -42,7 +47,7 @@ void loop() {
 }
 
 void lightStripAnimation() {
-  for (int i = 0; i < LED_COUNT; i++ ) {                        // от 0 до первой трети
+  for (int i = 0; i < LED_COUNT; i++ ) {                        // От 0 до первой трети
     lightStripLEDs[i] = CHSV(lightStripCounter + i * 2, 255, 255);      // HSV. Увеличивать HUE (цвет)
     // умножение i уменьшает шаг радуги
   }
@@ -50,8 +55,10 @@ void lightStripAnimation() {
   FastLED.show();
 }
 
-void brakeLightControl(bool state, bool lightType) {          // Функция для контроля заднего света
+void brakeLightControl(bool state, int lightType) {          // Функция для контроля заднего света
   if (state == true) {
+    if (lightType == 1) {
 
+    }
   }
 }
