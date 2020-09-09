@@ -21,17 +21,16 @@ void loop() {
   if (millis() - lightStripDelayLastCalled >= lightStripSpeed() ) { // Задержка
     lightStripDelayLastCalled = millis();                       // Заново считать время
 
-    switch (eucDeviceState())
-    {
-    case 'a':
-      lightSpeedNormal()
-      break;
-    case 'b':
-      lightStripWithStopSignal()
-      break;
-    default:
-      lightSpeedNormal()
-      break;
+    switch (eucDeviceState()) {
+      case 'a':
+        lightSpeedNormal()
+        break;
+      case 'b':
+        lightStripWithStopSignal()
+        break;
+      default:
+        lightSpeedNormal()
+        break;
     }
   }
 }
