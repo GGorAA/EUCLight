@@ -10,14 +10,16 @@ CRGB leds[LED_COUNT];
 byte lightStripCounter;
 
 void setup() {
+  driverRunOnStartup();                                          // Стартовые функции драйвера
   FastLED.addLeds<WS2811, LIGHTS_PIN, GRB>(leds, LED_COUNT).setCorrection( TypicalLEDStrip ); // настройка ленты
   FastLED.setBrightness(50);
-  pinMode(13, OUTPUT);  
+  pinMode(13, OUTPUT);
 }
 
 void loop() {
   // Тут мы собираем данные с колеса
   
+  eucCollectData()
   int lightStripSpeed = eucLightStripSpeed();                   // Берем данные про скорость подсветки
   
   if (millis() - lightStripDelayLastCalled >= lightStripSpeed ) { // Задержка
