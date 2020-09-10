@@ -3,10 +3,10 @@
 // Настройки главной светодиодной ленты
 #define LIGHT_STRIP_PIN 6                                       // Пин, к которому подключена главная лента
 #define LIGHT_STRIP_LED_COUNT 144                               // Количество светодиодов во всей главной ленте
-#define LIGHT_STRIP_BRIGHTNESS_ON 50                               // Яркость ленты. Диапазон: 0 - 255
+#define LIGHT_STRIP_BRIGHTNESS_ON 50                            // Яркость ленты. Диапазон: 0 - 255
 #define ORDER_GRB                                               // Порядок цветов
 
-//Настройки стоп-сигнала
+// Настройки стоп-сигнала
 // Пины
 #define BRAKELIGHT_RED_PIN 9                                    // Пин для подключения красного цвета стоп-сигнала
 #define BRAKELIGHT_GREEN_PIN 10                                 // Пин для подключения зеленого цвета стоп-сигнала
@@ -44,7 +44,10 @@ void loop() {
   
   eucCollectData();
   int lightStripSpeed = eucLightStripSpeed();                   // Берем данные про скорость подсветки
-  
+  controlLights();
+}
+
+void controlLights() {
   if (millis() - lightStripDelayLastCalled >= eucLightStripSpeed ) { // Задержка
     lightStripDelayLastCalled = millis();                       // Заново считать время
 
@@ -62,3 +65,4 @@ void loop() {
     }
   }
 }
+
