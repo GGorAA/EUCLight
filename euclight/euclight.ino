@@ -20,13 +20,16 @@
 
 #include "microLED.h"                                           // Библиотека для адресной светодиодной ленты
 #include "GyverRGB.h"                                           // Библиотека для светодиодов и обычных RGB лент
-#include "lightsControl.h"
+#include "lightsControl.h"                                      // Файл для функций ленты
+#include "MorsDuino.h"                                          // Библиотека для кода морзе
+
 unsigned long lightStripDelayLastCalled;                        // Переменная для замены delay() при помощи millis() в главной ленте
 unsigned long brakeLightOffDelayLastCalled;                     // Переменная для замены delay() при помощи millis() в стоп-сигнале
 
 LEDdata lightStripLEDs[LIGHT_STRIP_LED_COUNT];                              
 GRGB brakeLight(BRAKELIGHT_RED_PIN, BRAKELIGHT_GREEN_PIN, BRAKELIGHT_BLUE_PIN); // Обьект стоп-сигнала
 microLED mainLightStrip(lightStripLEDs, LIGHT_STRIP_LED_COUNT, LIGHT_STRIP_PIN); // Обьект главной светодиодной ленты
+MorsDuino arduinoLED(13, "led");
 
 void setup() {
   driverRunOnStartup();                                          // Стартовые функции драйвера
