@@ -1,5 +1,5 @@
 
-void mainLightStripAnimation() {
+void mainLightStripAnimation(int direction) {
   byte lightStripCounter;
 
   for (int i = 0; i < LIGHT_STRIP_LED_COUNT; i++ ) {                        // От 0 до первой трети
@@ -24,11 +24,15 @@ void mainLightStripAnimation() {
 void brakeLightControl(bool state, int lightType = 1) {
   if (state == true) {
     if (lightType == 1) {
-      brakeLight.fadeTo(255, 0, 0, BRAKELIGHT_ANIMATION_SPEED_ON);
+      brakeLight.fadeTo(255, 0, 0, 0);
     } else if (lightType == 2) {
-      brakeLight.fadeTo(255, 255, 255, BRAKELIGHT_ANIMATION_SPEED_ON);
-    } 
+      brakeLight.fadeTo(255, 255, 255, 0);
+    } else if (lightType == 3) {
+      
+    }
+    
+    
   } else if (state == false) {
-    //brakeLight.setBrightness();
+    brakeLight.setBrightness(BRAKELIGHT_BRIGTNESS_IDLE);
   }
 }
