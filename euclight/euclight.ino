@@ -49,12 +49,12 @@ microLED mainLightStrip(
 MorsDuino arduinoLED(LED_BUILTIN);
 
 void setup() {
-  driverRunOnStartup();                                          // Стартовые функции драйвера
-  // Установка стартовой яркости для светодиодных лент
-  mainLightStrip.setBrightness(LIGHT_STRIP_BRIGHTNESS);          
-  brakeLight.setBrightness(BRAKELIGHT_BRIGHTNESS_IDLE);
-  mainLightStrip.show();
-  brakeLight.show();
+  driverRunOnStartup();                                         // Стартовые функции драйвера
+
+  mainLightStrip.setBrightness(LIGHT_STRIP_BRIGHTNESS);         // Стартовая яркость главной ленты
+  brakeLight.setBrightness(BRAKELIGHT_BRIGHTNESS_IDLE);         // Стартовая яркость стоп-сигнала
+  mainLightStrip.show();                                        // Применить изменения
+  brakeLight.show();                                            // Применить изменения
   // Настройка пинов
   pinMode(LIGHT_STRIP_PIN, OUTPUT);
 }
