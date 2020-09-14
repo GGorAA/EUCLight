@@ -18,35 +18,45 @@ constexpr uint8_t BRAKELIGHT_BRIGTNESS_IDLE = 20;               // Яркост�
 constexpr uint8_t BRAKELIGHT_ANIMATION_SPEED_ON = 0;            // Скорость анимации включения стоп-сигнала. Измеряеться в миллисекундах
 constexpr uint8_t BRAKELIGHT_ANIMATION_SPEED_IDLE = 500;        // Скорость анимации выключения стоп-сигнала. Измеряеться в миллисекундах
 // Другое
-constexpr uint8_t BRAKELIGHT_STRIP_LEDCOUNT[2] = {8, 8, 8};     // Количество светодиодов в каждом отрезке. Пишеться в порядке сверху-вниз
+constexpr uint8_t BRAKELIGHT_STRIP_LEDCOUNT = BRAKELIGHT_MATRIX_WIDTH * BRAKELIGHT_MATRIX_WIDTH // Количество светодиодов в каждом отрезке. Пишеться в порядке сверху-вниз
+constexpr uint8_t BRAKELIGHT_MATRIX_HEIGHT = 3;                 // Высота "матрицы" стоп-сигнала
+constexpr uint8_t BRAKELIGHT_MATRIX_WIDTH = 8;                  // Ширина "матрицы" стоп-сигнала
 
 
-#include "microLED.h"                                           // Библиотека для адресной светодиодной ленты
-#include "GyverRGB.h"                                           // Библиотека для светодиодов и обычных RGB лент
+#include "microLED.h"                                           // Библиотека для адресных светодиодных лент
 #include "lightsControl.h"                                      // Файл для функций ленты
 #include "MorsDuino.h"                                          // Библиотека для кода морзе
 
 unsigned long lightStripDelayLastCalled;                        // Переменная для замены delay() при помощи millis() в главной ленте
 unsigned long brakeLightOffDelayLastCalled;                     // Переменная для замены delay() при помощи millis() в стоп-сигнале
 
-int brakeLightLEDCount = BRAKELIGHT_STRIP_LEDCOUNT[0] + BRAKELIGHT_STRIP_LEDCOUNT[1] + BRAKELIGHT_STRIP_LEDCOUNT[2]; // считать сумму всех светодиодов в ленте
 LEDdata lightStripLEDs[LIGHT_STRIP_LED_COUNT];       
 LEDdata brakeLightLEDs[brakeLightLEDCount];                       
 
-microLED brakeLight(brakeLightLEDs, brakeLightLEDCount, BRAKELIGHT_PIN);
-microLED mainLightStrip(lightStripLEDs, LIGHT_STRIP_LED_COUNT, LIGHT_STRIP_PIN); // Обьект главной светодиодной ленты
+microLED brakeLight(
+  brakeLightLEDs,
+  BRAKELIGHT_PIN,
+  BRAKELIGHT_MATRIX_WIDTH,
+  BRAKELIGHT_MATRIX_HEIGHT,
+  ZIGZAG,
+  LEFT_TOP,
+  DIR_RIGHT);                                                   // Обьект стоп-сигнала
+microLED mainLightStrip(
+  lightStripLEDs,
+  LIGHT_STRIP_LED_COUNT,
+  LIGHT_STRIP_PIN);                                             // Обьект главной светодиодной ленты
 
 MorsDuino arduinoLED(LED_BUILTIN);
 
 void setup() {
   driverRunOnStartup();                                          // Стартовые функции драйвера
-  mainLightStrip.setBrightness(LIGHT_STRIP_BRIGHTNESS);
-  brakeLight.setBrightness(BRAKELIGHT_BRIGHTNESS_ON);
+  // Установка стартовой яркости для светодиодных лент
+  mainLightStrip.setBrightness(LIGHT_STRIP_BRIGHTNESS);          
+  brakeLight.setBrightness(BRAKELIGHT_BRIGHTNESS_IDLE);
+  mainLightStrip.show();
+  brakeLight.show();
   // Настройка пинов
   pinMode(LIGHT_STRIP_PIN, OUTPUT);
-  pinMode(BRAKELIGHT_RED_PIN, OUTPUT);
-  pinMode(BRAKELIGHT_GREEN_PIN, OUTPUT);
-  pinMode(BRAKELIGHT_BLUE_PIN, OUTPUT);
 }
 
 void loop() {

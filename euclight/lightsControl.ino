@@ -9,6 +9,16 @@ void mainLightStripAnimation(int direction) {
   lightStripCounter++;                                          // lightStripCounter меняется от 0 до 255 (тип данных byte)
 }
 
+void rainbowMode(int direction) {
+  static byte hue = 0;
+  hue++;
+  for (byte i = 0; i < M_WIDTH; i++) {
+    LEDdata thisColor = mHSV((byte)(hue + i * float(255 / M_WIDTH)), 255, 255);
+    for (byte j = 0; j < M_HEIGHT; j++)
+      matrix.setPix(i, j, thisColor);
+  }
+}
+
 /*void brakeLightControl(bool state, int lightType = 1) {       // Функция для контроля заднего света
   if (state == true) {                                          // Если надо включить
     if (lightType == 1) {                                       // Если тип света торможение
