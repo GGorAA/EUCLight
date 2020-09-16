@@ -23,12 +23,12 @@ void rainbowMode(int direction)
   }
 }
 
-void alertMode() {
+void alertMode()
+{
   for (int i = 0; i <= LIGHT_STRIP_LED_COUNT; i++)
   {
     mainLightStrip.setHEX(i, 0xFF6565);
   }
-  
 }
 
 /*void brakeLightControl(bool state, int lightType = 1) {       // Функция для контроля заднего света
