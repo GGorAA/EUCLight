@@ -13,16 +13,16 @@ constexpr uint8_t LIGHT_STRIP_BRIGHTNESS = 50; // Яркость ленты. Д�
 // Пины
 constexpr uint8_t BRAKELIGHT_PIN = 5; // Пин подключения адресной ленты для стоп-сигнала
 // Свет
-constexpr uint8_t BRAKELIGHT_BRIGHTNESS_ON = 100; // Яркость включенного стоп-сигнала. Диапазон: 0 - 255
-constexpr uint8_t BRAKELIGHT_BRIGTNESS_IDLE = 20; // Яркость бездейвствующего стоп-сигнала. Диапазон: 0 - 255
+constexpr uint8_t BRAKELIGHT_BRIGHTNESS_ON = 100;	 // Яркость включенного стоп-сигнала. Диапазон: 0 - 255
+constexpr uint8_t BRAKELIGHT_BRIGHTNESS_IDLE = 20; // Яркость бездейвствующего стоп-сигнала. Диапазон: 0 - 255
 // Анимации
 constexpr uint8_t BRAKELIGHT_ANIMATION_SPEED_ON = 0;		 // Скорость анимации включения стоп-сигнала. Измеряеться в миллисекундах
 constexpr uint8_t BRAKELIGHT_ANIMATION_SPEED_IDLE = 500; // Скорость анимации выключения стоп-сигнала. Измеряеться в миллисекундах
 // Другое
-constexpr uint8_t BRAKELIGHT_MATRIX_LEDCOUNT = BRAKELIGHT_MATRIX_WIDTH * BRAKELIGHT_MATRIX_HEIGHT; // Количество светодиодов в каждом отрезке. Пишеться в порядке сверху-вниз
 constexpr uint8_t BRAKELIGHT_MATRIX_HEIGHT = 3;																										 // Высота "матрицы" стоп-сигнала
 constexpr uint8_t BRAKELIGHT_MATRIX_WIDTH = 8;																										 // Ширина "матрицы" стоп-сигнала
-constexpr uint8_t BRAKELIGHT_SENSITIVITY = -5;
+constexpr uint8_t BRAKELIGHT_MATRIX_LEDCOUNT = BRAKELIGHT_MATRIX_WIDTH * BRAKELIGHT_MATRIX_HEIGHT; // Количество светодиодов в каждом отрезке. Пишеться в порядке сверху-вниз
+constexpr uint8_t BRAKELIGHT_SENSITIVITY = -5;																										 // Чувствительность стоп-сигнала. Чем ближе к нулю, тем чувствительнее
 
 #define DEVICE_MODEL VeteranSherman // Модель моноколеса. Смотреть https://github.com/GGorAA/EUCLight для просмотра всех сущевствующих имен
 
@@ -54,17 +54,21 @@ microLED mainLightStrip( // Обьект главной светодиодной
 		LIGHT_STRIP_LED_COUNT,
 		LIGHT_STRIP_PIN);
 
-MorsDuino arduinoLED(LED_BUILTIN);
+//MorsDuino arduinoLED(LED_BUILTIN);
 
 float eucSpeed;
 float eucTempMileage;
 float eucCurrent;
 float eucTemperature;
 
+bool isBreaking = false;
+bool isReversing = false;
+
 void setup()
 {
 	// Настройка пинов
 	pinMode(LIGHT_STRIP_PIN, OUTPUT);
+	pinMode(BRAKELIGHT_PIN, OUTPUT);
 
 	Serial.begin(115200);
 	ElectricUnicycle.setCallback(eucCallbackFunction);
@@ -89,7 +93,7 @@ void controlLights()
 	{																				// Задержка
 		lightStripDelayLastCalled = millis(); // Заново считать время
 
-		switch (eucDeviceState())
+		switch (isBreaking)
 		{ // Если моноколесо ускоряеться
 		case 1:
 			brakeLightControl(false);		// Выключить стоп-сигнал
@@ -106,20 +110,28 @@ void controlLights()
 		default:
 			break;
 		}
+		switch (isBreaking)
+		{
+		case true:
+			brakeLightControl(true);
+			break;
+
+		default:
+			break;
+		}
 	}
 }
 
 void eucCallbackFunction(float voltage, float speed, float tempMileage, float current, float temperature, float mileage, bool dataIsNew)
 {
-	static bool isBreaking = false;
 	unsigned long now = millis();
 
 	if (dataIsNew)
 	{
 		eucInfoLastUpdated = millis(); // Сбросить счетчик
 
-		acceleration = calcAcceleration(speed, now);
-		isBreaking = acceleration < BREAK_SENSITIVITY;
+		int acceleration = calcAcceleration(speed, now);
+		isBreaking = acceleration < BRAKELIGHT_SENSITIVITY;
 
 		eucSpeed = speed;
 		eucCurrent = current;

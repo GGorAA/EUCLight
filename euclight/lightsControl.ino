@@ -61,6 +61,6 @@ void brakeLightControl(bool state, int lightType = 1)
   }
   else if (state == false)
   {
-    brakeLight.setBrightness(BRAKELIGHT_BRIGTNESS_IDLE);
+    brakeLight.setBrightness(BRAKELIGHT_BRIGHTNESS_IDLE);
   }
 }
