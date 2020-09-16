@@ -19,11 +19,12 @@ constexpr uint8_t BRAKELIGHT_BRIGTNESS_IDLE = 20; // Яркость бездей
 constexpr uint8_t BRAKELIGHT_ANIMATION_SPEED_ON = 0;		 // Скорость анимации включения стоп-сигнала. Измеряеться в миллисекундах
 constexpr uint8_t BRAKELIGHT_ANIMATION_SPEED_IDLE = 500; // Скорость анимации выключения стоп-сигнала. Измеряеться в миллисекундах
 // Другое
-constexpr uint8_t BRAKELIGHT_MATRIX_LEDCOUNT = BRAKELIGHT_MATRIX_WIDTH *BRAKELIGHT_MATRIX_HEIGHT // Количество светодиодов в каждом отрезке. Пишеться в порядке сверху-вниз
-		constexpr uint8_t BRAKELIGHT_MATRIX_HEIGHT = 3;																							 // Высота "матрицы" стоп-сигнала
-constexpr uint8_t BRAKELIGHT_MATRIX_WIDTH = 8;																									 // Ширина "матрицы" стоп-сигнала
+constexpr uint8_t BRAKELIGHT_MATRIX_LEDCOUNT = BRAKELIGHT_MATRIX_WIDTH * BRAKELIGHT_MATRIX_HEIGHT; // Количество светодиодов в каждом отрезке. Пишеться в порядке сверху-вниз
+constexpr uint8_t BRAKELIGHT_MATRIX_HEIGHT = 3;																										 // Высота "матрицы" стоп-сигнала
+constexpr uint8_t BRAKELIGHT_MATRIX_WIDTH = 8;																										 // Ширина "матрицы" стоп-сигнала
+constexpr uint8_t BRAKELIGHT_SENSITIVITY = -5;
 
-#define DEVICE_MODEL VeteranSherman // Модель моноколеса. Смотреть https://github.com/GGorAA/EUCSerialInterface для просмотра всех сущевствующих имен
+#define DEVICE_MODEL VeteranSherman // Модель моноколеса. Смотреть https://github.com/GGorAA/EUCLight для просмотра всех сущевствующих имен
 
 #include "microLED.h"						// Библиотека для адресных светодиодных лент
 #include "lightsControl.h"			// Файл для функций ленты
@@ -32,6 +33,8 @@ constexpr uint8_t BRAKELIGHT_MATRIX_WIDTH = 8;																									 // Ши�
 
 unsigned long lightStripDelayLastCalled;		// Переменная для замены delay() при помощи millis() в главной ленте
 unsigned long brakeLightOffDelayLastCalled; // Переменная для замены delay() при помощи millis() в стоп-сигнале
+
+unsigned long eucInfoLastUpdated = millis();
 
 LEDdata lightStripLEDs[LIGHT_STRIP_LED_COUNT];
 LEDdata brakeLightLEDs[BRAKELIGHT_MATRIX_LEDCOUNT];
@@ -53,7 +56,6 @@ microLED mainLightStrip( // Обьект главной светодиодной
 
 MorsDuino arduinoLED(LED_BUILTIN);
 
-float voltage, float speed, float tempMileage, float current, float temperature, float mileage int eucBatteryPercentage;
 float eucSpeed;
 float eucTempMileage;
 float eucCurrent;
@@ -65,11 +67,11 @@ void setup()
 	pinMode(LIGHT_STRIP_PIN, OUTPUT);
 
 	Serial.begin(115200);
-	ElectricUnicycle.setCallback()
-			mainLightStrip.setBrightness(LIGHT_STRIP_BRIGHTNESS); // Стартовая яркость главной ленты
-	brakeLight.setBrightness(BRAKELIGHT_BRIGHTNESS_IDLE);			// Стартовая яркость стоп-сигнала
-	mainLightStrip.show();																		// Применить изменения
-	brakeLight.show();																				// Применить изменения
+	ElectricUnicycle.setCallback(eucCallbackFunction);
+	mainLightStrip.setBrightness(LIGHT_STRIP_BRIGHTNESS); // Стартовая яркость главной ленты
+	brakeLight.setBrightness(BRAKELIGHT_BRIGHTNESS_IDLE); // Стартовая яркость стоп-сигнала
+	mainLightStrip.show();																// Применить изменения
+	brakeLight.show();																		// Применить изменения
 }
 
 void loop()
@@ -107,21 +109,43 @@ void controlLights()
 	}
 }
 
-void EucCallbackFunction(float voltage, float speed, float tempMileage, float current, float temperature, float mileage, bool dataIsNew)
+void eucCallbackFunction(float voltage, float speed, float tempMileage, float current, float temperature, float mileage, bool dataIsNew)
 {
+	static bool isBreaking = false;
+	unsigned long now = millis();
+
+	if (dataIsNew)
+	{
+		eucInfoLastUpdated = millis(); // Сбросить счетчик
+
+		acceleration = calcAcceleration(speed, now);
+		isBreaking = acceleration < BREAK_SENSITIVITY;
+
+		eucSpeed = speed;
+		eucCurrent = current;
+		eucTempMileage = tempMileage;
+		eucTemperature = temperature;
+	}
 }
 
 float calcAcceleration(float currentSpeed, unsigned long currentTime)
 {
 	static float lastTime = 0;
 	static float lastSpeed = 0;
+
 	if (currentTime == 0)
+	{
 		return 0;
+	}
+
 	currentSpeed = abs(currentSpeed);
 	float timeDelta = (float)(currentTime - lastTime) / 1000; // secs
 	float speedDelta = (currentSpeed - lastSpeed) / 3.6;			// m/s
+
 	if (timeDelta == 0)
+	{
 		return 0;
+	}
 	float acceleration = speedDelta / timeDelta; // m/s^2
 	lastTime = currentTime;
 	lastSpeed = currentSpeed;
