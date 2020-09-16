@@ -105,58 +105,6 @@ void eucCallbackFunction(float voltage, float speed, float tempMileage, float cu
 	}
 }
 
-void controlLights()
-{
-	if (millis() - lightStripDelayLastCalled >= eucLightStripSpeed)
-	{																				// Задержка
-		lightStripDelayLastCalled = millis(); // Заново считать время
-
-		switch (isBreaking)
-		{ // Если моноколесо ускоряеться
-		case 1:
-			brakeLightControl(false);		// Выключить стоп-сигнал
-			mainLightStripAnimation(1); // Анимация главной светодиодной ленты
-			break;
-		case 2:
-			brakeLightControl(true, 1);
-			mainLightStripAnimation(1);
-		case 3:
-			brakeLightControl(true, 2);
-			mainLightStripAnimation(2);
-		case 4:
-
-		default:
-			break;
-		}
-		switch (isBreaking)
-		{
-		case true:
-			if (isReversing)
-			{
-				brakeLightControl(true, 2);
-				mainLightStripAnimation(2);
-			}
-			else
-			{
-				brakeLightControl(true, 1);
-				mainLightStripAnimation(1);
-			}
-			break;
-		case false:
-			if (isReversing)
-			{
-				brakeLightControl(false);
-				mainLightStripAnimation(2);
-			} else {
-				brakeLightControl(false);
-				mainLightStripAnimation(1);
-			}
-		default:
-			break;
-		}
-	}
-}
-
 void setLightStripSpeed()
 {
 	eucLightStripSpeed = LIGHT_STRIP_ANIMATION_MODIFIER * eucSpeed;
