@@ -1,9 +1,6 @@
-char eucDataArray[20];
-char eucTempDataArray[20];
 
 void driverRunOnStartup() {
-    Serial.begin(115200);
-    arduinoLED.displayString("cw");
+    arduinoLED.displayString("ds");
 }
 
 int eucLightStripSpeed() {
@@ -13,9 +10,7 @@ int eucLightStripSpeed() {
 
 
 void eucCollectData() {
-    //String incomingData = Serial.readStringUntil(0x5A5A5A5A);
     
-    //int speed = incomingData.substring();
 }
 
 int eucDeviceSpeed;
