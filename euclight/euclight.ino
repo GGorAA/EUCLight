@@ -8,6 +8,7 @@ constexpr uint8_t LIGHT_STRIP_LED_COUNT = 144;				// Количество све
 constexpr uint8_t LIGHT_STRIP_BRIGHTNESS = 50;				// Яркость ленты. Диапазон: 0 - 255
 constexpr uint8_t LIGHT_STRIP_ANIMATION_MODIFIER = 2; // Модификатор для определения скорости ленты
 constexpr uint8_t LIGHT_STRIP_ANIMATION_STEP = 2;			// Шаг радуги. Чем больше, тем меньше
+constexpr uint8_t LIGHT_STRIP_ANIMATION_MODE = 2;			// Тип анимации. Посетите https://github.com/GGorAA/EUCLight/wiki/Settings что бы узнать более
 #define ORDER_RGB																			// Порядок цветов
 #define COLOR_DEBTH 2																	// цветовая глубина: 1, 2, 3 (в байтах)
 
@@ -84,7 +85,8 @@ void setup()
 void loop()
 {
 	setLightStripSpeed();
-	if (lightStripDelayLastCalled <= eucLightStripSpeed) {
+	if (lightStripDelayLastCalled <= eucLightStripSpeed)
+	{
 		lightStripDelayLastCalled = millis();
 		controlLights();
 	}

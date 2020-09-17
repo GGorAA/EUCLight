@@ -53,9 +53,16 @@ void controlLights()
   }
 }
 
-void mainLightStripAnimation(int direction)
+void mainLightStripAnimation(int direction, int mode)
 {
-  rainbowMode(direction);
+  if (mode == 1)
+  {
+    rainbowMode(direction);
+  }
+  else if (mode == 2)
+  {
+    blueWhiteMode(direction);
+  }
 }
 
 void rainbowMode(int direction)
@@ -79,6 +86,10 @@ void rainbowMode(int direction)
     counter++; // counter меняется от 0 до 255 (тип данных byte)
     mainLightStrip.show();
   }
+}
+
+void blueWhiteMode(int direction) {
+
 }
 
 void alertMode()
