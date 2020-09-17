@@ -55,25 +55,29 @@ void controlLights()
 
 void mainLightStripAnimation(int direction)
 {
-  byte lightStripCounter;
-
-  for (int i = 0; i < LIGHT_STRIP_LED_COUNT; i++)
-  { // От 0 до первой трети
-    // HSV. Увеличивать HUE (цвет)
-    // умножение i уменьшает шаг радуги
-  }
-  lightStripCounter++; // lightStripCounter меняется от 0 до 255 (тип данных byte)
+  rainbowMode(direction);
 }
 
 void rainbowMode(int direction)
 {
-  static byte hue = 0;
-  hue++;
-  for (byte i = 0; i < BRAKELIGHT_MATRIX_WIDTH; i++)
+  byte counter;
+  if (direction == 1)
   {
-    LEDdata thisColor = mHSV((byte)(hue + i * float(255 / BRAKELIGHT_MATRIX_WIDTH)), 255, 255);
-    for (byte j = 0; j < BRAKELIGHT_MATRIX_HEIGHT; j++)
-      mainLightStrip.setPix(i, j, thisColor);
+    for (int i = 0; i < LIGHT_STRIP_LED_COUNT; i++)
+    {                                                                                 // от 0 до первой трети
+      mainLightStrip.setHSV(counter + i * LIGHT_STRIP_ANIMATION_STEP, 255, 100, 100); // HSV. Увеличивать HUE (цвет)
+    }
+    counter++; // counter меняется от 0 до 255 (тип данных byte)
+    mainLightStrip.show();
+  }
+  else if (direction == 2)
+  {
+    for (int i = LIGHT_STRIP_LED_COUNT; i <= 0; i--)
+    {                                                                                 // от 0 до первой трети
+      mainLightStrip.setHSV(counter + i * LIGHT_STRIP_ANIMATION_STEP, 255, 100, 100); // HSV. Увеличивать HUE (цвет)
+    }
+    counter++; // counter меняется от 0 до 255 (тип данных byte)
+    mainLightStrip.show();
   }
 }
 
@@ -87,18 +91,6 @@ void alertMode()
     }
   }
 }
-
-/*void brakeLightControl(bool state, int lightType = 1) {       // Функция для контроля заднего света
-  if (state == true) {                                          // Если надо включить
-    if (lightType == 1) {                                       // Если тип света торможение
-      brakeLight.fadeTo(RED, BRAKELIGHT_ANIMATION_SPEED_ON);    // Установить красный свет
-    } else if (lightType == 2) {                                // Если тип света для движения назад
-      brakeLight.fadeTo(WHITE, BRAKELIGHT_ANIMATION_SPEED_ON);  // Установить белый цвет
-    }
-  } else if (state == false) {                                  // Если надо выключить
-      brakeLight.fadeTo(BLACK, BRAKELIGHT_ANIMATION_SPEED_OFF); // Выключить свет
-  }
-}*/
 
 void brakeLightControl(bool state, int lightType = 1)
 {

@@ -7,18 +7,16 @@ constexpr uint8_t LIGHT_STRIP_PIN = 6;								// Пин, к которому п�
 constexpr uint8_t LIGHT_STRIP_LED_COUNT = 144;				// Количество светодиодов во всей главной ленте
 constexpr uint8_t LIGHT_STRIP_BRIGHTNESS = 50;				// Яркость ленты. Диапазон: 0 - 255
 constexpr uint8_t LIGHT_STRIP_ANIMATION_MODIFIER = 2; // Модификатор для определения скорости ленты
-#define ORDER_GRB																			// Порядок цветов
+constexpr uint8_t LIGHT_STRIP_ANIMATION_STEP = 2;			// Шаг радуги. Чем больше, тем меньше
+#define ORDER_RGB																			// Порядок цветов
 #define COLOR_DEBTH 2																	// цветовая глубина: 1, 2, 3 (в байтах)
 
 // Настройки стоп-сигнала
 // Пины
 constexpr uint8_t BRAKELIGHT_PIN = 5; // Пин подключения адресной ленты для стоп-сигнала
 // Свет
-constexpr uint8_t BRAKELIGHT_BRIGHTNESS_ON = 100;	 // Яркость включенного стоп-сигнала. Диапазон: 0 - 255
-constexpr uint8_t BRAKELIGHT_BRIGHTNESS_IDLE = 20; // Яркость бездейвствующего стоп-сигнала. Диапазон: 0 - 255
-// Анимации
-constexpr uint8_t BRAKELIGHT_ANIMATION_SPEED_ON = 0;		 // Скорость анимации включения стоп-сигнала. Измеряеться в миллисекундах
-constexpr uint8_t BRAKELIGHT_ANIMATION_SPEED_IDLE = 500; // Скорость анимации выключения стоп-сигнала. Измеряеться в миллисекундах
+constexpr uint8_t BRAKELIGHT_BRIGHTNESS_ON = 255;	 // Яркость включенного стоп-сигнала. Диапазон: 0 - 255
+constexpr uint8_t BRAKELIGHT_BRIGHTNESS_IDLE = 40; // Яркость бездейвствующего стоп-сигнала. Диапазон: 0 - 255
 // Другое
 constexpr uint8_t BRAKELIGHT_MATRIX_HEIGHT = 3;																										 // Высота "матрицы" стоп-сигнала
 constexpr uint8_t BRAKELIGHT_MATRIX_WIDTH = 8;																										 // Ширина "матрицы" стоп-сигнала
@@ -26,6 +24,8 @@ constexpr uint8_t BRAKELIGHT_MATRIX_LEDCOUNT = BRAKELIGHT_MATRIX_WIDTH * BRAKELI
 constexpr uint8_t BRAKELIGHT_SENSITIVITY = -5;																										 // Чувствительность стоп-сигнала. Чем ближе к нулю, тем чувствительнее
 
 #define DEVICE_MODEL GotwayMcm2 // Модель моноколеса. Смотреть https://github.com/GGorAA/EUCLight для просмотра всех сущевствующих имен
+
+/*------------------НАСТРОЙКИ ЗАКОНЧИЛИСЬ----------------------------*/
 
 #include "microLED.h"						// Библиотека для адресных светодиодных лент
 #include "lightsControl.h"			// Файл для функций ленты
@@ -55,7 +55,7 @@ microLED mainLightStrip( // Обьект главной светодиодной
 		LIGHT_STRIP_LED_COUNT,
 		LIGHT_STRIP_PIN);
 
-//MorsDuino arduinoLED(LED_BUILTIN);
+MorsDuino arduinoLED(13, 1);
 
 float eucSpeed;
 float eucTempMileage;
@@ -83,8 +83,11 @@ void setup()
 
 void loop()
 {
-	controlLights();
 	setLightStripSpeed();
+	if (lightStripDelayLastCalled <= eucLightStripSpeed) {
+		lightStripDelayLastCalled = millis();
+		controlLights();
+	}
 }
 
 void eucCallbackFunction(float voltage, float speed, float tempMileage, float current, float temperature, float mileage, bool dataIsNew)

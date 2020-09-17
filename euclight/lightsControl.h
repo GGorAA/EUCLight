@@ -1,7 +1,7 @@
 #ifndef LIGHTSCONTROL
 #define LIGHTSCONTROL
 
-void mainLightStripAnimation();
+void mainLightStripAnimation(int direction);
 
 void brakeLightControl(bool state, int lightType = 1);
 
