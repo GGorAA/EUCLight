@@ -25,7 +25,7 @@ constexpr uint8_t BRAKELIGHT_MATRIX_WIDTH = 8;																										 // Ши
 constexpr uint8_t BRAKELIGHT_MATRIX_LEDCOUNT = BRAKELIGHT_MATRIX_WIDTH * BRAKELIGHT_MATRIX_HEIGHT; // Количество светодиодов в каждом отрезке. Пишеться в порядке сверху-вниз
 constexpr uint8_t BRAKELIGHT_SENSITIVITY = -5;																										 // Чувствительность стоп-сигнала. Чем ближе к нулю, тем чувствительнее
 
-#define DEVICE_MODEL VeteranSherman // Модель моноколеса. Смотреть https://github.com/GGorAA/EUCLight для просмотра всех сущевствующих имен
+#define DEVICE_MODEL GotwayMcm2 // Модель моноколеса. Смотреть https://github.com/GGorAA/EUCLight для просмотра всех сущевствующих имен
 
 #include "microLED.h"						// Библиотека для адресных светодиодных лент
 #include "lightsControl.h"			// Файл для функций ленты
