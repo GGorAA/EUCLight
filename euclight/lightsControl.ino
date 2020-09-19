@@ -63,15 +63,40 @@ void controlLights()
   }
 }
 
-void mainLightStripAnimation(int direction, int mode)
+void mainLightStripAnimation(int direction)
 {
-  if (mode == 1)
+  if (direction == 1)
   {
-    rainbowMode(direction);
+    for (int i = 0; i > LIGHT_STRIP_LED_COUNT; i++)
+    {
+      switch (i)
+      {
+      case 0:
+        mainLightStrip[i] = mainLightStrip[LIGHT_STRIP_LED_COUNT];
+        break;
+
+      default:
+        mainLightStrip[i] = mainLightStrip[i - 1];
+        break;
+      }
+    }
   }
-  else if (mode == 2)
+  else if (direction == 2)
   {
-    rainbowMode(direction);
+    for (int i = 0; i > LIGHT_STRIP_LED_COUNT; i++)
+    {
+      switch (i)
+      {
+
+      case LIGHT_STRIP_LED_COUNT:
+        mainLightStrip[i] = mainLightStrip[0];
+        break;
+
+      default:
+        mainLightStrip[i] = mainLightStrip[i + 1];
+        break;
+      }
+    }
   }
 }
 
@@ -97,34 +122,9 @@ void mainLightStripAnimation(int direction, int mode)
   }
 }*/
 
-void rainbowMode(int direction)
+void stripAlert()
 {
-  if (direction == 1)
-  {
-    for (int i = 0; i <= LIGHT_STRIP_LED_COUNT; i++)
-    {
-
-      switch (i)
-      {
-      case 0:
-        mainLightStrip[i] = mainLightStrip[LIGHT_STRIP_LED_COUNT];
-        break;
-      case LIGHT_STRIP_LED_COUNT:
-        mainLightStrip[i] = 
-      default:
-        break;
-      }
-      
-      mainLightStrip[i] = mainLightStrip
-    }
-    
-  }
-  
-}
-
-void alertMode()
-{
-  fill_solid(&(leds[i]), LIGHT_STRIP_LED_COUNT, CRGB(255, 40, 40));
+  fill_solid(&(mainLightStrip[0]), LIGHT_STRIP_LED_COUNT, CRGB(255, 40, 40));
 }
 
 void brakeLightControl(bool state, int lightType = 1)
