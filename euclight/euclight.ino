@@ -8,9 +8,7 @@ constexpr uint8_t LIGHT_STRIP_LED_COUNT = 144;		  // Количество све
 constexpr uint8_t LIGHT_STRIP_BRIGHTNESS = 50;		  // Яркость ленты. Диапазон: 0 - 255
 constexpr uint8_t LIGHT_STRIP_ANIMATION_MODIFIER = 2; // Модификатор для определения скорости ленты
 constexpr uint8_t LIGHT_STRIP_ANIMATION_STEP = 2;	  // Шаг радуги. Чем больше, тем меньше
-constexpr uint8_t LIGHT_STRIP_ANIMATION_MODE = 2;	  // Тип анимации. Посетите https://github.com/GGorAA/EUCLight/wiki/Settings что бы узнать более
-#define ORDER_RGB									  // Порядок цветов
-#define COLOR_DEBTH 2								  // цветовая глубина: 1, 2, 3 (в байтах)
+constexpr uint8_t LIGHT_STRIP_ANIMATION_MODE = 2;	  // Тип анимации. https://github.com/GGorAA/EUCLight/wiki/Animation-modes что бы узнать более
 
 // Настройки стоп-сигнала
 // Пины
@@ -38,23 +36,10 @@ unsigned long brakeLightOffDelayLastCalled; // Переменная для за�
 
 unsigned long eucInfoLastUpdated = millis();
 
-CRGB lightStripLEDs[LIGHT_STRIP_LED_COUNT];
-CRGB brakeLightLEDs[BRAKELIGHT_MATRIX_LEDCOUNT];
+CRGB mainLightStrip[LIGHT_STRIP_LED_COUNT];
+CRGB brakeLight[BRAKELIGHT_MATRIX_LEDCOUNT];
 
 DEVICE_MODEL ElectricUnicycle(Serial, Serial);
-
-microLED brakeLight( // Обьект стоп-сигнала
-	brakeLightLEDs,
-	BRAKELIGHT_PIN,
-	BRAKELIGHT_MATRIX_WIDTH,
-	BRAKELIGHT_MATRIX_HEIGHT,
-	ZIGZAG,
-	LEFT_TOP,
-	DIR_RIGHT);
-microLED mainLightStrip( // Обьект главной светодиодной ленты
-	lightStripLEDs,
-	LIGHT_STRIP_LED_COUNT,
-	LIGHT_STRIP_PIN);
 
 MorsDuino arduinoLED(13, 1);
 
@@ -77,12 +62,17 @@ void setup()
 	Serial.begin(115200);
 	ElectricUnicycle.setCallback(eucCallbackFunction);
 	FastLED.addLeds<WS2811, LIGHT_STRIP_PIN>(mainLightStrip, LIGHT_STRIP_LED_COUNT);
+	FastLED.addLeds<WS2811, BRAKELIGHT_PIN>(brakeLight, BRAKELIGHT_MATRIX_LEDCOUNT);
 }
 
 void loop()
 {
 	ElectricUnicycle.tick();
 	setLightStripSpeed();
+	if (eucInfoLastUpdated >= 5000)
+	{
+		stripAlert();
+	}
 	if (lightStripDelayLastCalled <= eucLightStripSpeed)
 	{
 		lightStripDelayLastCalled = millis();

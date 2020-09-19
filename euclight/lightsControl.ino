@@ -2,10 +2,7 @@ void stripsDrawColors(int mode) // Рисует на светодиодах ба
 {
   if (mode == 1)
   {
-    for (int i = 0; i < LIGHT_STRIP_LED_COUNT; i++)                                                    // Отрисовка радуги на главной ленте
-    {                                                                                                  // от 0 до первой трети
-      mainLightStrip.setHSV(i * LIGHT_STRIP_ANIMATION_STEP, mainLightStripAnimationCounter, 100, 100); // HSV. Увеличивать HUE (цвет)
-    }
+    fill_rainbow( &(mainLightStrip[0]), LIGHT_STRIP_LED_COUNT, 222 /*starting hue*/); // Нарисовать радугу
   }
 }
 
@@ -129,7 +126,7 @@ void stripAlert()
 
 void brakeLightControl(bool state, int lightType = 1)
 {
-  if (state == true)
+  /*if (state == true)
   {
     if (lightType == 1)
     {
@@ -158,5 +155,5 @@ void brakeLightControl(bool state, int lightType = 1)
   else if (state == false)
   {
     brakeLight.setBrightness(BRAKELIGHT_BRIGHTNESS_IDLE);
-  }
+  }*/
 }
