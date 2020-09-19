@@ -81,6 +81,7 @@ void setup()
 
 void loop()
 {
+	ElectricUnicycle.tick();
 	setLightStripSpeed();
 	if (lightStripDelayLastCalled <= eucLightStripSpeed)
 	{
