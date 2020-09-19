@@ -33,5 +33,5 @@
 
 .DS_Store
 
-euclight/parse.java
 WS2812_FX_fixed.ino
+LED_EFFECT_FUNCTIONS.ino

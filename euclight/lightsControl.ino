@@ -1,3 +1,13 @@
+void stripsDrawColors(int mode) // Рисует на светодиодах базовые рисунки, с которыми будет потом взаимодействовать анимация
+{
+  if (mode == 1)
+  {
+    for (int i = 0; i < LIGHT_STRIP_LED_COUNT; i++)                                                    // Отрисовка радуги на главной ленте
+    {                                                                                                  // от 0 до первой трети
+      mainLightStrip.setHSV(i * LIGHT_STRIP_ANIMATION_STEP, mainLightStripAnimationCounter, 100, 100); // HSV. Увеличивать HUE (цвет)
+    }
+  }
+}
 
 void controlLights()
 {
@@ -61,46 +71,60 @@ void mainLightStripAnimation(int direction, int mode)
   }
   else if (mode == 2)
   {
-    blueWhiteMode(direction);
+    rainbowMode(direction);
   }
 }
 
-void rainbowMode(int direction)
+/*void rainbowMode(int direction)
 {
-  byte counter;
   if (direction == 1)
   {
     for (int i = 0; i < LIGHT_STRIP_LED_COUNT; i++)
-    {                                                                                 // от 0 до первой трети
-      mainLightStrip.setHSV(counter + i * LIGHT_STRIP_ANIMATION_STEP, 255, 100, 100); // HSV. Увеличивать HUE (цвет)
+    {                                                                                                  // от 0 до первой трети
+      mainLightStrip.setHSV(i * LIGHT_STRIP_ANIMATION_STEP, mainLightStripAnimationCounter, 100, 100); // HSV. Увеличивать HUE (цвет)
     }
-    counter++; // counter меняется от 0 до 255 (тип данных byte)
+    mainLightStripAnimationCounter++; // mainLightStripAnimationCounter меняется от 0 до 255 (тип данных byte)
     mainLightStrip.show();
   }
   else if (direction == 2)
   {
     for (int i = LIGHT_STRIP_LED_COUNT; i <= 0; i--)
-    {                                                                                 // от 0 до первой трети
-      mainLightStrip.setHSV(counter + i * LIGHT_STRIP_ANIMATION_STEP, 255, 100, 100); // HSV. Увеличивать HUE (цвет)
+    {                                                                                                  // от 0 до первой трети
+      mainLightStrip.setHSV(i * LIGHT_STRIP_ANIMATION_STEP, mainLightStripAnimationCounter, 100, 100); // HSV. Увеличивать HUE (цвет)
+      mainLightStripAnimationCounter++;                                                                // counter меняется от 0 до 255
     }
-    counter++; // counter меняется от 0 до 255 (тип данных byte)
     mainLightStrip.show();
   }
-}
+}*/
 
-void blueWhiteMode(int direction) {
+void rainbowMode(int direction)
+{
+  if (direction == 1)
+  {
+    for (int i = 0; i <= LIGHT_STRIP_LED_COUNT; i++)
+    {
 
+      switch (i)
+      {
+      case 0:
+        mainLightStrip[i] = mainLightStrip[LIGHT_STRIP_LED_COUNT];
+        break;
+      case LIGHT_STRIP_LED_COUNT:
+        mainLightStrip[i] = 
+      default:
+        break;
+      }
+      
+      mainLightStrip[i] = mainLightStrip
+    }
+    
+  }
+  
 }
 
 void alertMode()
 {
-  for (int i = 0; i < 3; i++)
-  {
-    for (int i2 = 0; i2 <= LIGHT_STRIP_LED_COUNT; i2++)
-    {
-      mainLightStrip.setHEX(i2, 0xFF6565);
-    }
-  }
+  fill_solid(&(leds[i]), LIGHT_STRIP_LED_COUNT, CRGB(255, 40, 40));
 }
 
 void brakeLightControl(bool state, int lightType = 1)
