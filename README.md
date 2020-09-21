@@ -6,8 +6,6 @@ An Arduino project for bringing beautiful LED strips animation to unicycles. For
 
 IDE used to develop: VS Code
 
-Code snippets copyright: @AlexGyver
-
 ## Used libraries
 
 [EUCSerialInterface](https://github.com/T-vK/Electric-Unicycle-Interface/issues/3)
