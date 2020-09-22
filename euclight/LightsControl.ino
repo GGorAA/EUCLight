@@ -9,22 +9,6 @@ void controlLights() {
   if (millis() - lightStripDelayLastCalled >= eucLightStripSpeed) {  // Задержка
     lightStripDelayLastCalled = millis();                            // Заново считать время
 
-    switch (isBreaking) {  // Если моноколесо ускоряеться
-      case 1:
-        brakeLightControl(false);    // Выключить стоп-сигнал
-        mainLightStripAnimation(1);  // Анимация главной светодиодной ленты
-        break;
-      case 2:
-        brakeLightControl(true, 1);
-        mainLightStripAnimation(1);
-      case 3:
-        brakeLightControl(true, 2);
-        mainLightStripAnimation(2);
-      case 4:
-
-      default:
-        break;
-    }
     switch (isBreaking) {
       case true:
         if (isReversing) {
@@ -37,8 +21,8 @@ void controlLights() {
         break;
       case false:
         if (isReversing) {
-          brakeLightControl(false);
-          mainLightStripAnimation(2);
+          brakeLightControl(false);    // Выключить стоп-сигнал
+          mainLightStripAnimation(2);  // Анимация главной светодиодной ленты
         } else {
           brakeLightControl(false);
           mainLightStripAnimation(1);
