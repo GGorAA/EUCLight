@@ -9,4 +9,5 @@ IDE used to develop: VS Code
 
 ## Used libraries
 
-[EUCSerialInterface](https://github.com/T-vK/Electric-Unicycle-Interface/issues/3)
+[EUCSerialInterface](https://github.com/T-vK/Electric-Unicycle-Interface)
+[MorsDuino](https://github.com/GGorAA/MorsDuino)
